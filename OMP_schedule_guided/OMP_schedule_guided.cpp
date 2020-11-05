@@ -6,8 +6,6 @@ const int array_size = 1200000;
 
 int main()
 {
-#pragma comment(linker, "/STACK:16777216")
-
 	int* first_vector, * second_vector;
 	first_vector = (int*)malloc(array_size * sizeof(int));
 	second_vector = (int*)malloc(array_size * sizeof(int));

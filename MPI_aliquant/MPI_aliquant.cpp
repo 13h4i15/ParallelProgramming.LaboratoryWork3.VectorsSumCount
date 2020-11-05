@@ -6,8 +6,6 @@ const int array_size = 12/*0000*/;
 
 int main(int argc, char* argv[])
 {
-#pragma comment(linker, "/STACK:12777216")
-
 	int proc_rank, proc_size;
 
 	MPI_Init(&argc, &argv);
