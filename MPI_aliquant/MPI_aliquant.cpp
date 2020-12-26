@@ -1,8 +1,9 @@
-﻿#include <cstdio>
-#include <cstdlib>
+﻿#include <stdlib.h>
 #include "mpi.h"
+#include <math.h>
+#include <stdio.h>
 
-const int array_size = 12/*0000*/;
+const int array_size = 600001;
 
 int main(int argc, char* argv[])
 {
@@ -58,7 +59,7 @@ int main(int argc, char* argv[])
 	int *first_local_vector, *second_local_vector;
 	first_local_vector = (int*)malloc(local_size * sizeof(int));
 	second_local_vector = (int*)malloc(local_size * sizeof(int));
-	
+
 	MPI_Scatterv(first_vector, sizes, displs, MPI_INT, first_local_vector, local_size, MPI_INT, 0, MPI_COMM_WORLD);
 	MPI_Scatterv(second_vector, sizes, displs, MPI_INT, second_local_vector, local_size, MPI_INT, 0, MPI_COMM_WORLD);
 
@@ -67,7 +68,7 @@ int main(int argc, char* argv[])
 
 	int* sum_local;
 	sum_local = (int*)malloc(local_size * sizeof(int));
-	
+
 	for (i = 0; i < local_size; ++i)
 	{
 		sum_local[i] = first_local_vector[i] + second_local_vector[i];
@@ -77,7 +78,7 @@ int main(int argc, char* argv[])
 
 	int* sum;
 	sum = (int*)malloc(array_size * sizeof(int));
-	
+
 	MPI_Gatherv(sum_local, local_size, MPI_INT, sum, sizes, displs, MPI_INT, 0, MPI_COMM_WORLD);
 
 	if (proc_rank == 0)
@@ -85,6 +86,15 @@ int main(int argc, char* argv[])
 		printf("\nFirst item of result = %d", sum[0]);
 		printf("\nTime of work is = %f", end_time - start_time);
 	}
-
 	MPI_Finalize();
+
+	free(first_vector);
+	free(second_vector);
+	free(sizes);
+	free(displs);
+	free(second_local_vector);
+	free(sum_local);
+	free(sum);
+
+	return 0;
 }

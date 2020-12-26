@@ -2,11 +2,11 @@
 #include <cstdlib>
 #include <omp.h>
 
-const int array_size = 1200000;
+const int array_size = 600000;
 
 int main()
 {
-	int* first_vector, * second_vector;
+	int *first_vector, *second_vector;
 	first_vector = (int*)malloc(array_size * sizeof(int));
 	second_vector = (int*)malloc(array_size * sizeof(int));
 	int i;
@@ -16,7 +16,7 @@ int main()
 		second_vector[i] = 1;
 	}
 
-	omp_set_num_threads(12);
+	omp_set_num_threads(32);
 
 	double start_time, end_time;
 	start_time = omp_get_wtime();
@@ -37,6 +37,10 @@ int main()
 
 	printf("\nFirst item of result = %d", sum[0]);
 	printf("\nTime of work is = %f", end_time - start_time);
+
+	free(first_vector);
+	free(second_vector);
+	free(sum);
 
 	return 0;
 }
